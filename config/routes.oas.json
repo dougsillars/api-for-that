@@ -5,12 +5,63 @@
     "title": "My Zuplo API"
   },
   "paths": {
-    "/apiforthat": {
+    "/v1/apiforthat": {
       "x-zuplo-path": {
         "pathMode": "open-api"
       },
       "get": {
         "summary": "find an API",
+        "description": "Lorem ipsum dolor sit amet, **consectetur adipiscing** elit, sed do `eiusmod tempor` incididunt ut labore et dolore magna aliqua.",
+        "x-zuplo-route": {
+          "corsPolicy": "none",
+          "handler": {
+            "export": "default",
+            "module": "$import(./modules/ask_chatgpt)",
+            "options": {}
+          },
+          "policies": {
+            "inbound": [
+              "set-headers-inbound-chatgpt"
+            ]
+          }
+        },
+        "operationId": "d3043924-a12c-471a-a088-9adadb3440ac"
+      }
+    },
+    "/weather": {
+      "x-zuplo-path": {
+        "pathMode": "open-api"
+      },
+      "get": {
+        "summary": "chatsimple",
+        "description": "Lorem ipsum dolor sit amet, **consectetur adipiscing** elit, sed do `eiusmod tempor` incididunt ut labore et dolore magna aliqua.",
+        "x-zuplo-route": {
+          "corsPolicy": "none",
+          "handler": {
+            "export": "urlRewriteHandler",
+            "module": "$import(@zuplo/runtime)",
+            "options": {
+              "rewritePattern": "https://api.openai.com/v1/chat/completions"
+            }
+          },
+          "policies": {
+            "inbound": [
+              "change-method-inbound-to-post",
+              "set-headers-inbound-chatgpt",
+              "set-body-inbound"
+            ],
+            "outbound": []
+          }
+        },
+        "operationId": "da1e96ab-d9ac-48bb-8fff-76e1bb2e9ec3"
+      }
+    },
+    "/path-2": {
+      "x-zuplo-path": {
+        "pathMode": "open-api"
+      },
+      "get": {
+        "summary": "New Route",
         "description": "Lorem ipsum dolor sit amet, **consectetur adipiscing** elit, sed do `eiusmod tempor` incididunt ut labore et dolore magna aliqua.",
         "x-zuplo-route": {
           "corsPolicy": "none",
@@ -22,12 +73,10 @@
             }
           },
           "policies": {
-            "inbound": [
-              "api-key-inbound"
-            ]
+            "inbound": []
           }
         },
-        "operationId": "d3043924-a12c-471a-a088-9adadb3440ac"
+        "operationId": "cf22f9ae-920d-4a54-9a70-780b791bd95d"
       }
     }
   }

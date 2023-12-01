@@ -2,10 +2,9 @@
   "policies": [
     {
       "handler": {
-        "export": "ApiKeyInboundPolicy",
+        "export": "SetHeadersInboundPolicy",
         "module": "$import(@zuplo/runtime)",
         "options": {
-          "allowUnauthenticatedRequests": false,
           "headers": [
             {
               "name": "api-key",
@@ -15,8 +14,52 @@
           ]
         }
       },
-      "name": "api-key-inbound",
-      "policyType": "api-key-inbound"
+      "name": "set-origin-api-key",
+      "policyType": "set-headers-inbound"
+    },
+    {
+      "handler": {
+        "export": "SetHeadersInboundPolicy",
+        "module": "$import(@zuplo/runtime)",
+        "options": {
+          "headers": [
+            {
+              "name": "Authorization",
+              "value": "Bearer $env(CHATGPT_API)",
+              "overwrite": true
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json",
+              "overwrite": true
+            }
+          ]
+        }
+      },
+      "name": "set-headers-inbound-chatgpt",
+      "policyType": "set-headers-inbound"
+    },
+    {
+      "handler": {
+        "export": "SetBodyInboundPolicy",
+        "module": "$import(@zuplo/runtime)",
+        "options": {
+          "body": "{ \"model\": \"gpt-3.5-turbo\", \"messages\": [{ \"role\": \"system\", \"content\": \"You are a helpful assistant. Your users will be looking for information about publically acessible apis.  If you know of an API or APIs that match thier description, provide it. List free APIs first. For each API you list, provide a name,  URL, if it is free/paid and if there is a link to a swagger doc, provide that as well.\" },{ \"role\": \"user\", \"content\": \"weather\" }] }"
+        }
+      },
+      "name": "set-body-inbound",
+      "policyType": "set-body-inbound"
+    },
+    {
+      "handler": {
+        "export": "ChangeMethodInboundPolicy",
+        "module": "$import(@zuplo/runtime)",
+        "options": {
+          "method": "POST"
+        }
+      },
+      "name": "change-method-inbound-to-post",
+      "policyType": "change-method-inbound"
     }
   ]
 }
